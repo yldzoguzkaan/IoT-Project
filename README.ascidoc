@@ -1,0 +1,23 @@
+= NESNELERİN İNTERNETİ AKILLI EV SİSTEMİ
+
+*Özet—Projemizde sıcaklık sensörü kullanılarak evin sıcaklığınının ölçüm değerlerini mobil uygulama sayesinde ev sahibine ileten, istenilen sıcaklık değerlerine uzaktan control sağlayan akıllı ev sistemi tasarlanmak istenmiştir.*
+
+* I.	GİRİŞ 
+
+Projemizi Arduino IDE ortamında geliştirdik. Ayrıca telefondan ev sıcaklığını ayarlayabilmek için bir mobil  uygulama geliştirdik.
+Projemizde NodeMcu v3 kartını tercih ettik. Bunun sebebi ayrı bir wifi kartı kullanımına gerek kalmadan bu kartın üzerinde ESP8266 Wifi kartının tümleşik durumda bulunmasıydı.                     
+Öncelikle lm35 sıcaklık sensöründen data gönderebilmek için ThingSpeak’te evsicakligi adında bir kanal oluşturduk[1].
+
+image::images/1.jpg[]
+
+Devremize ilk önce NodeMcu v3 kartımızı bağladık[2] ve wifi bağlantılarını control ettik. Wifi’ ye başarılı bir şekilde bağlandığını gördükten sonra lm35 sıcaklık sensörümüzü devremize bağladık ve ThingSpeak’e data göndermeye başladık. Bu grafiğe de anlikSicaklik adını verdik[4].
+
+image::images/2.jpg[]
+
+Datalarımızı ThingSpeak’te başarılı bir şekilde gördükten sonra devremize biri kırmızı biri mavi olmak üzere iki adet led bağladık. Ve ThingSpeak’te bir grafik daha oluşturduk. istenilenSicaklik adını verdiğimiz grafik mobil uygulamadan gönderdiğimiz sıcaklık değerlerini bize gösteriyor.
+
+image::images/3.jpg[]
+
+Ve eğer ki gönderdiğimiz istenilenSicaklik değerimiz anlikSicaklik değerinden düşük ise mavi led, yüksek ise kırmızı led yanıyor[3].
+
+image::images/4.jpg[]
