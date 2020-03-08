@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Akıllı Ev
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label >Evin sıcaklığı: <b style="color:#f00000">{{sicaklik}}</b></ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">İstenilen Sıcaklığı Ayarla</ion-label>
+        <ion-input type="text" [(ngModel)]="sicaklikDegeri"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="sicaklikAyarla()">Buluta Gönder</ion-button>
+  </div>
+</ion-content>
