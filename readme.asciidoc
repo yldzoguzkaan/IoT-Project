@@ -21,3 +21,103 @@ image::images/3.jpg[]
 Ve eğer ki gönderdiğimiz istenilenSicaklik değerimiz anlikSicaklik değerinden düşük ise mavi led, yüksek ise kırmızı led yanıyor[3].
 
 image::images/4.jpg[]
+
+* II.	DEVRE ŞEMASI 
+
+image::images/5.jpg[]
+
+* III.	GELİŞTİRME
+
+Oluşturduğumuz sistemin kodları aşağıdaki gibidir.
+[source,]
+----
+#include <ThingSpeak.h>
+#include <ESP8266WiFi.h>
+
+#define KIRMIZI D0
+#define MAVI D1
+
+//const char* ssid = "OKY_WİFİ";
+//const char* password = "*****";
+
+const char* ssid = "OKY";
+const char* password = "*****";
+
+const char * apiWritekey = "****";
+const char * apiReadkey  = "****";
+const char* server = "api.thingspeak.com";
+
+unsigned long channelID = 900937;
+float resolution = 3.3/1024;
+
+WiFiClient client;
+
+void wifiyeBaglan(){
+  WiFi.begin(ssid, password);
+ 
+  Serial.println();
+  Serial.println();
+  Serial.print("Baglanacak wifi adi  ");
+  Serial.println(ssid);
+ 
+  WiFi.begin(ssid, password);
+ 
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("NodeMcu wifiye baglaniyor...");
+  Serial.println(ssid);
+  Serial.println();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  
+  
+  pinMode(KIRMIZI, OUTPUT);
+  pinMode(MAVI, OUTPUT); 
+  wifiyeBaglan();
+  ThingSpeak.begin(client);
+}
+ 
+void loop() {
+  sicaklikVerisiniThingSpeakaYaz();
+}
+
+void sicaklikVerisiniThingSpeakaYaz(){
+  float anlikSicaklik = (analogRead(A0) * resolution) * 100;
+  Serial.print("Sicaklik:");
+  Serial.print(anlikSicaklik);
+  Serial.println();
+  Serial.print("Thingspeak’a gönder");
+  Serial.println("Bekleniyor..");
+  ThingSpeak.writeField(channelID, 1, anlikSicaklik, apiWritekey);
+  float istenenSicaklik = ThingSpeak.readFloatField(channelID,2,apiReadkey);
+  Serial.println(istenenSicaklik);
+  if(anlikSicaklik > istenenSicaklik ){
+    Serial.println("Mavi Led Yanacaktir.");
+    digitalWrite(MAVI, HIGH);
+    digitalWrite(KIRMIZI, LOW);
+  }else{
+    Serial.println("Kirmizi Led Yanacaktir.");
+    digitalWrite(KIRMIZI, HIGH);
+    digitalWrite(MAVI, LOW);
+  }
+  delay(15000);
+}
+
+----
+
+* IV.	REFERANSLAR
+
+[1]	https://maker.robotistan.com/esp8266-dersleri-2-thingspeake-sicaklik-yollama/
+
+[2]	https://www.instructables.com/id/Getting-Started-With-ESP8266LiLon-NodeMCU-V3Flashi/
+
+[3]	https://www.instructables.com/id/NodeMCU-Basic-Project-Blink-a-LED/ 
+
+[4]	https://www.instructables.com/id/NodeMCU-Basic-Project-Blink-a-LE
